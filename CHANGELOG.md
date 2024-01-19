@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/CShatto99/Enchantify/compare/v1.0.1...v1.0.2) (2024-01-19)
+
+
+### Bug Fixes
+
+* **main:** change bot status ([99bd8db](https://github.com/CShatto99/Enchantify/commit/99bd8dbf93bf2a2afff762a54d8634efd023f8ee))
+
 ## [1.0.1](https://github.com/CShatto99/Enchantify/compare/v1.0.0...v1.0.1) (2024-01-19)
 
 

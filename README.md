@@ -22,6 +22,8 @@ Install the dependencies:
 npm install
 ```
 
+Rename `.env.example` to `.env` and fill out env vars
+
 Run the development server:
 
 ```bash
