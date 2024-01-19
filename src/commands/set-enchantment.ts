@@ -147,12 +147,12 @@ const setEnchantment = {
         }
       });
     } catch (error) {
-      console.error(
-        `Error occurred during search autocomplete: ${error.message}`
-      );
+      const errorMsg = getErrorMessage(error);
+      console.error(`Error occurred during search autocomplete: ${errorMsg}`);
+
       // Send an error response to the interaction
       await interaction.respond({
-        content: `❌ ${getErrorMessage(error)}`,
+        content: `❌ ${errorMsg}`,
         ephemeral: true,
       });
     }

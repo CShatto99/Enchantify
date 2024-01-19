@@ -19,11 +19,11 @@ gh repo clone CShatto99/Enchantify
 Install the dependencies:
 
 ```bash
-yarn
+npm install
 ```
 
 Run the development server:
 
 ```bash
-yarn dev
+npm run dev
 ```

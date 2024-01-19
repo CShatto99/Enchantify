@@ -60,10 +60,10 @@ const forge = {
           const endLevel: string = interaction.options.getString(
             INPUT_OPTIONS.level
           );
-          const endLevelNum: number = ENCHANTMENT_LEVELS[endLevel];
+          const endLevelNum = ENCHANTMENT_LEVELS[endLevel];
           const enchantments: Enchantments = JSON.parse(data);
           const { level: startLevel, price } = enchantments[enchantment];
-          const startLevelNum: number = ENCHANTMENT_LEVELS[startLevel];
+          const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
           const exponent = endLevelNum - startLevelNum - 1;
           const forgeCost = 2 ** exponent * parseInt(price);
 
@@ -115,13 +115,12 @@ const forge = {
         }
       });
     } catch (error) {
-      console.error(
-        `Error occurred during search autocomplete: ${error.message}`
-      );
+      const errorMsg = getErrorMessage(error);
+      console.error(`Error occurred during search autocomplete: ${errorMsg}`);
 
       // Send an error response to the interaction
       await interaction.respond({
-        content: `❌ ${getErrorMessage(error)}`,
+        content: `❌ ${errorMsg}`,
         ephemeral: true,
       });
     }

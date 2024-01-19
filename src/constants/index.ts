@@ -14,7 +14,7 @@ export const INPUT_OPTIONS = {
   price: 'price',
   level: 'level',
 };
-export const ENCHANTMENT_LEVELS = {
+export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   I: 1,
   II: 2,
   III: 3,
