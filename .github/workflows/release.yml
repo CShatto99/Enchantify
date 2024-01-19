@@ -33,7 +33,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci --prefer-offline --no-audit
       - name: Lint, Format, and Test
-        run: npm run lint:fix && npm run pretty
+        run: npm run lint && npm run pretty
       - name: Install semantic-release Extra Plugins
         run: npm install --save-dev @semantic-release/changelog @semantic-release/git
       - name: Create Release
