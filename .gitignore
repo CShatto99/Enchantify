@@ -9,7 +9,6 @@
 # production
 /build
 /dist
-enchantments.json
 
 # Output of 'npm pack'
 *.tgz

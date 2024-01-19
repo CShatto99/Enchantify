@@ -34,25 +34,14 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "date-fns": "^2.29.3",
     "discord.js": "^14.8.0",
-    "dotenv": "^16.0.0",
-    "ioredis": "^5.3.1",
-    "jsonwebtoken": "^8.5.1",
-    "uuid": "^8.3.2"
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
-    "@types/cookie-parser": "^1.4.3",
-    "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
-    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.31",
-    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.14.0",
