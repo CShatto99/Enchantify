@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/CShatto99/Enchantify/compare/v1.0.0...v1.0.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* **main:** remove test console ([bf43b0b](https://github.com/CShatto99/Enchantify/commit/bf43b0bec3906f8789a4187c7c943bd1d8295a18))
+
 # 1.0.0 (2024-01-19)
 
 
