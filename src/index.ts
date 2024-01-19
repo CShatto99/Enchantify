@@ -5,6 +5,8 @@ import createInteraction from './utils/createInteraction';
 import importCommands from './utils/importCommands';
 import registerSlashCommands from './utils/registerSlashCommands';
 
+console.log('trigger action');
+
 export const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
