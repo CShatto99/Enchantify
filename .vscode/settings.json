@@ -1,0 +1,16 @@
+{
+  // Fix eslint errors on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Prettier settings
+  "editor.formatOnSave": true,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/package-lock.json": true,
+    "**/package.json": true,
+    "dist/**": true // Don't search the TypeScript "dist" folder
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "name": "enchantify",
+  "version": "0.0.0-semantic-release",
+  "description": "Enchantify Discord Bot",
+  "main": "src/index.ts",
+  "author": "Cameron Shatto <cameronshatto99@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/CShatto99/Enchantify/blob/main/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CShatto99/Enchantify"
+  },
+  "keywords": [
+    "typescript",
+    "discord.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/CShatto99/Enchantify/issues"
+  },
+  "scripts": {
+    "start": "yarn build && node dist/index.js",
+    "build": "npx tsc",
+    "dev": "nodemon",
+    "migrate": "prisma migrate dev --name init",
+    "type-check": "tsc --pretty --noEmit",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "pretty": "prettier --config .prettierrc src/**/*.ts --write",
+    "test": "jest --roots test --verbose --watch",
+    "test:ci": "jest --roots test --ci",
+    "test:coverage": "jest --roots test --verbose --collect-coverage",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
+    "discord.js": "^14.8.0",
+    "dotenv": "^16.0.0",
+    "ioredis": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.31",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.8.4"
+  }
+}
