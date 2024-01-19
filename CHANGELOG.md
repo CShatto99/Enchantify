@@ -1,3 +1,11 @@
+## [1.0.4](https://github.com/CShatto99/Enchantify/compare/v1.0.3...v1.0.4) (2024-01-19)
+
+
+### Bug Fixes
+
+* **main:** fix pipeline and eslint ([6ad7600](https://github.com/CShatto99/Enchantify/commit/6ad76008c408e71ff2a00c9b37f9463171406bfa))
+* **main:** upgrade deps and fix enchantments file ([7bf8720](https://github.com/CShatto99/Enchantify/commit/7bf8720bb62e11f48c1e06fa96a43deec0fa291f))
+
 ## [1.0.3](https://github.com/CShatto99/Enchantify/compare/v1.0.2...v1.0.3) (2024-01-19)
 
 
