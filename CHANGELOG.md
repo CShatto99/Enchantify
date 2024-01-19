@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/CShatto99/Enchantify/compare/v1.0.2...v1.0.3) (2024-01-19)
+
+
+### Bug Fixes
+
+* **main:** remove yarn and fix build script ([22d383a](https://github.com/CShatto99/Enchantify/commit/22d383afaa0244b1f75816451c20682f481876c3))
+
 ## [1.0.2](https://github.com/CShatto99/Enchantify/compare/v1.0.1...v1.0.2) (2024-01-19)
 
 
