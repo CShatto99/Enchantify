@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/CShatto99/Enchantify/compare/v1.0.4...v1.0.5) (2024-01-20)
+
+
+### Bug Fixes
+
+* **main:** remove .js files ([1a62108](https://github.com/CShatto99/Enchantify/commit/1a62108f8cf08eb3fbca0b025de2810d7176ac05))
+
 ## [1.0.4](https://github.com/CShatto99/Enchantify/compare/v1.0.3...v1.0.4) (2024-01-19)
 
 
