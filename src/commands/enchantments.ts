@@ -103,7 +103,10 @@ const enchantments = {
             JSON.parse(data)
           );
           const filteredEnchantments = enchantments.filter(
-            ([, properties]) => !gear || properties.gear.includes(gear)
+            ([, properties]) =>
+              !gear ||
+              properties.gear.includes(gear) ||
+              properties.gear.length === 0
           );
 
           if (filteredEnchantments.length === 0) {

@@ -1,12 +1,13 @@
 export const MAX_AUTOCOMPLETE_OPTIONS = 25;
 export const ENCHANTMENTS_FILE_PATH = 'src/enchantments.json';
+export const GEAR_TYPE_DELIMITER = ',';
+export const EMBED_COLOR = '#17DD62';
 export const COMMANDS = {
-  compatibility: 'compatibility',
   enchantments: 'enchantments',
   forge: 'forge',
   price: 'price',
   remove: 'remove',
-  setEnchantment: 'set-enchantment',
+  enchantment: 'enchantment',
 };
 export const INPUT_OPTIONS = {
   gear: 'gear',
@@ -27,72 +28,95 @@ export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   X: 10,
 };
 export const GEAR_TYPES = [
+  'Helmet',
+  'Chest',
+  'Legs',
+  'Boots',
+  'Weapon',
+  'Hammer',
+  'Trident',
+  'Shield',
+  'Bow',
+  'Crossbow',
+  'Pickaxe',
+  'Axe',
+  'Shovel',
+  'Hoe',
+  'Fishing Pole',
+  'Shears',
+  'Weapon',
+];
+export const GEAR_OPTIONS = [
   {
     name: 'Helmet',
-    value: 'Helmet',
+    values: ['helmet', 'head', 'hat', 'hood'],
   },
   {
     name: 'Chest',
-    value: 'Chest',
+    values: [
+      'chest',
+      'chestplate',
+      'chestpiece',
+      'chest plate',
+      'chest piece',
+      'body',
+      'breastplate',
+    ],
   },
   {
     name: 'Legs',
-    value: 'Legs',
+    values: ['legs', 'leggings', 'pants'],
   },
   {
     name: 'Boots',
-    value: 'Boots',
+    values: ['boots', 'boot', 'feet', 'foot', 'shoe', 'shoes'],
   },
   {
     name: 'Weapon',
-    value: 'Weapon',
+    values: ['weapon', 'sword'],
   },
   {
     name: 'Hammer',
-    value: 'Hammer',
+    values: ['hammer'],
   },
   {
     name: 'Trident',
-    value: 'Trident',
+    values: ['trident'],
   },
   {
     name: 'Shield',
-    value: 'Shield',
+    values: ['shield'],
   },
   {
     name: 'Bow',
-    value: 'Bow',
+    values: ['bow'],
   },
   {
     name: 'Crossbow',
-    value: 'Crossbow',
+    values: ['crossbow'],
   },
   {
     name: 'Pickaxe',
-    value: 'Pickaxe',
+    values: ['pickaxe', 'pick'],
   },
   {
     name: 'Axe',
-    value: 'Axe',
+    values: ['axe'],
   },
   {
     name: 'Shovel',
-    value: 'Shovel',
+    values: ['shovel'],
   },
   {
     name: 'Hoe',
-    value: 'Hoe',
+    values: ['hoe'],
   },
   {
     name: 'Fishing Pole',
-    value: 'Fishing Pole',
+    values: ['fishing pole', 'fishingpole', 'fishing', 'pole'],
   },
   {
     name: 'Shears',
-    value: 'Shears',
-  },
-  {
-    name: 'Weapon',
-    value: 'Weapon',
+    values: ['shears', 'shear'],
   },
 ];

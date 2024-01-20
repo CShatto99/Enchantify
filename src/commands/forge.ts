@@ -1,8 +1,9 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { BaseInteraction, Enchantments } from '../@types/custom';
 import {
   COMMANDS,
+  EMBED_COLOR,
   ENCHANTMENTS_FILE_PATH,
   ENCHANTMENT_LEVELS,
   INPUT_OPTIONS,
@@ -14,7 +15,7 @@ const forge = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.forge)
     .setDescription(
-      'Calculates how many emeralds it costs to forge an enchantment book'
+      'Calculates how many emeralds it costs to forge an enchanted book'
     )
     .addStringOption(option =>
       option
@@ -64,14 +65,32 @@ const forge = {
           const enchantments: Enchantments = JSON.parse(data);
           const { level: startLevel, price } = enchantments[enchantment];
           const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
-          const exponent = endLevelNum - startLevelNum - 1;
+
+          if (endLevelNum <= startLevelNum) {
+            await interaction.reply({
+              content: `ℹ️ The entered level must be greater than the ${enchantment} level in your library (${enchantment} ${startLevel})`,
+              ephemeral: true,
+            });
+            return;
+          }
+
+          const exponent = endLevelNum - startLevelNum;
           const forgeCost = 2 ** exponent * parseInt(price);
 
-          await interaction.reply({
-            content: `It will cost **${forgeCost} emeralds** and **${
-              2 ** exponent
-            } ${enchantment} ${startLevel}** books to forge **${enchantment} ${endLevel}**.`,
-          });
+          const embed = new EmbedBuilder()
+            .setColor(EMBED_COLOR)
+            .setTitle(
+              `${enchantment} ${startLevel} -> ${enchantment} ${endLevel}`
+            )
+            .setDescription(
+              `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`
+            )
+            .addFields([
+              { name: 'Cost', value: `${forgeCost} emeralds` },
+              { name: 'Books', value: `${2 ** exponent} books` },
+            ]);
+
+          await interaction.reply({ embeds: [embed] });
         }
       });
     } catch (error) {

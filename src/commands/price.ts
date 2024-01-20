@@ -40,7 +40,7 @@ const price = {
           const { level, price } = enchantments[enchantment];
 
           await interaction.reply({
-            content: `${enchantment} ${level} costs ${price} emeralds.`,
+            content: `\`${enchantment} ${level} (${price} emeralds)\``,
           });
         }
       });

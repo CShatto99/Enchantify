@@ -3,16 +3,18 @@ import * as fs from 'fs';
 import { BaseInteraction, Enchantments } from '../@types/custom';
 import {
   COMMANDS,
+  GEAR_OPTIONS,
+  GEAR_TYPE_DELIMITER,
   INPUT_OPTIONS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
 import { ENCHANTMENTS_FILE_PATH } from '../constants/index';
 import getErrorMessage from '../utils/getErrorMessage';
 
-const setEnchantment = {
+const enchantment = {
   data: new SlashCommandBuilder()
-    .setName(COMMANDS.setEnchantment)
-    .setDescription('Set or update the price of an enchantment')
+    .setName(COMMANDS.enchantment)
+    .setDescription('Add or update an enchantment in your enchantment library')
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.enchantment)
@@ -47,7 +49,9 @@ const setEnchantment = {
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.gear)
-        .setDescription('Enter 1 or more gear types separated by a |')
+        .setDescription(
+          `Enter 1 or more gear types separated by a comma (${GEAR_TYPE_DELIMITER})`
+        )
     ),
   async execute(interaction: BaseInteraction) {
     try {
@@ -74,9 +78,29 @@ const setEnchantment = {
           const gear: string = interaction.options.getString(
             INPUT_OPTIONS.gear
           );
-          const gearTypes = gear
-            ? gear.split('|').map(gearType => gearType.trim())
-            : [];
+          const gearTypes: string[] = [];
+          const unsupportedGear = [];
+          gear.split(GEAR_TYPE_DELIMITER).forEach(gearType => {
+            const lowerGearType = gearType.trim().toLowerCase();
+            const gearFound = GEAR_OPTIONS.find(({ values }) =>
+              values.includes(lowerGearType)
+            );
+            if (gearFound) {
+              gearTypes.push(gearFound.name);
+            } else {
+              unsupportedGear.push(gearType);
+            }
+          });
+
+          // User entered at least one unsupported gear type
+          if (unsupportedGear.length > 0) {
+            await interaction.reply({
+              content: `❌ Unsupported gear type provided, supported gear types: \`${GEAR_OPTIONS.map(gearOption => gearOption.name).join(', ')}\``,
+              ephemeral: true,
+            });
+            return;
+          }
+
           const enchantments: Enchantments = JSON.parse(data);
           const newEnchantments: Enchantments = {
             ...enchantments,
@@ -97,9 +121,8 @@ const setEnchantment = {
                   ephemeral: true,
                 });
               } else {
-                console.log('Data has been written to', ENCHANTMENTS_FILE_PATH);
                 await interaction.reply({
-                  content: `${enchantment} ${level} added.`,
+                  content: `${enchantment} ${level} added`,
                 });
               }
             }
@@ -107,7 +130,7 @@ const setEnchantment = {
         }
       });
     } catch (error) {
-      console.error(`${COMMANDS.setEnchantment} error: `, error);
+      console.error(`${COMMANDS.enchantment} error: `, error);
       await interaction.reply({
         content: `❌ ${getErrorMessage(error)}`,
         ephemeral: true,
@@ -159,4 +182,4 @@ const setEnchantment = {
   },
 };
 
-export default setEnchantment;
+export default enchantment;
