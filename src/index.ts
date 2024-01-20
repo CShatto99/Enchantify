@@ -1,9 +1,12 @@
 import { ActivityType, Client, Events, GatewayIntentBits } from 'discord.js';
 import { BotClient } from './@types/custom';
 import config from './utils/config';
+import connectToDB from './utils/connect';
 import createInteraction from './utils/createInteraction';
 import importCommands from './utils/importCommands';
 import registerSlashCommands from './utils/registerSlashCommands';
+
+connectToDB();
 
 export const client: BotClient = new Client({
   intents: [

@@ -6,6 +6,7 @@ const config = {
   BOT_TOKEN: process.env.BOT_TOKEN || '',
   APPLICATION_ID: process.env.APPLICATION_ID || '',
   SERVER_ID: process.env.SERVER_ID || '',
+  MONGO_URI: process.env.MONGO_URI || '',
 };
 
 export default config;
