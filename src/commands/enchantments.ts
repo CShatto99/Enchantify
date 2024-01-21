@@ -1,13 +1,19 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { APIEmbedField, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { BaseInteraction, Enchantments } from '../@types/custom';
-import { COMMANDS, ENCHANTMENTS_FILE_PATH, INPUT_OPTIONS } from '../constants';
+import {
+  COMMANDS,
+  EMBED_COLOR,
+  ENCHANTMENTS_FILE_PATH,
+  GEAR_OPTIONS,
+  INPUT_OPTIONS,
+} from '../constants';
 import getErrorMessage from '../utils/getErrorMessage';
 
 const enchantments = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.enchantments)
-    .setDescription('List all enchantments with optional filters')
+    .setDescription('List all enchantments with optional parameters')
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.gear)
@@ -82,6 +88,14 @@ const enchantments = {
             value: 'Weapon',
           }
         )
+    )
+    .addStringOption(option =>
+      option
+        .setName(INPUT_OPTIONS.organize)
+        .setDescription(
+          'If No, enchantments will not be organized by gear type'
+        )
+        .addChoices({ name: 'No', value: 'No' })
     ),
   async execute(interaction: BaseInteraction) {
     try {
@@ -96,11 +110,14 @@ const enchantments = {
             ephemeral: true,
           });
         } else {
+          const enchantments: [string, Enchantments[string]][] = Object.entries(
+            JSON.parse(data)
+          );
           const gear: string = interaction.options.getString(
             INPUT_OPTIONS.gear
           );
-          const enchantments: [string, Enchantments[string]][] = Object.entries(
-            JSON.parse(data)
+          const organize: string = interaction.options.getString(
+            INPUT_OPTIONS.organize
           );
           const filteredEnchantments = enchantments.filter(
             ([, properties]) =>
@@ -109,22 +126,46 @@ const enchantments = {
               properties.gear.length === 0
           );
 
+          const embedFields: APIEmbedField[] = [];
+          let content: string | null = null;
+
           if (filteredEnchantments.length === 0) {
-            await interaction.reply({
-              content: `🔍 No enchantments found`,
+            content = `🔍 No enchantments found`;
+          } else if (!gear && organize !== 'No') {
+            // Show all enchantments when no gear type is specified AND organize is undefined
+            GEAR_OPTIONS.forEach(gearOption => {
+              const gearEnchantments = enchantments.filter(
+                ([, properties]) =>
+                  properties.gear.includes(gearOption.name) ||
+                  properties.gear.length === 0
+              );
+              embedFields.push({
+                name: gearOption.name,
+                value: gearEnchantments
+                  .map(
+                    ([enchantment, properties]) =>
+                      `\n${enchantment} ${properties.level} (${properties.price} emeralds)`
+                  )
+                  .join(''),
+              });
             });
-            return;
+          } else {
+            // Only show enchantments for provided gear type
+            content = filteredEnchantments
+              .map(
+                ([enchantment, properties]) =>
+                  `\n${enchantment} ${properties.level} (${properties.price} emeralds)`
+              )
+              .join('');
           }
 
-          let content = '```\n';
-          filteredEnchantments.forEach(([enchantment, properties]) => {
-            content += `${enchantment} ${properties.level} (${properties.price} emeralds)\n`;
-          });
-          content += '```';
+          const embed = new EmbedBuilder()
+            .setColor(EMBED_COLOR)
+            .setTitle(`${gear ?? 'All'} Enchantments`)
+            .setDescription(content)
+            .addFields(embedFields);
 
-          await interaction.reply({
-            content: `**${gear ?? 'All'} Enchantments** \n${content}`,
-          });
+          await interaction.reply({ embeds: [embed] });
         }
       });
     } catch (error) {

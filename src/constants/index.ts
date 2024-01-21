@@ -14,6 +14,7 @@ export const INPUT_OPTIONS = {
   enchantment: 'enchantment',
   price: 'price',
   level: 'level',
+  organize: 'organize',
 };
 export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   I: 1,
