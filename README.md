@@ -2,6 +2,8 @@
 
 Enchantify: A Minecraft Enchantment Assistant. Keep track of enchantments, view compatibility with gear, and calculate enchantments costs – solving your Minecraft enchanting complexities.
 
+**Invite Link:** https://discord.com/api/oauth2/authorize?client_id=1197698797048967178&permissions=2147552256&scope=bot
+
 ## Table of Contents
 
 - [Installation](#installation)
