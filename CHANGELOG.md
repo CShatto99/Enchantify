@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/CShatto99/Enchantify/compare/v1.1.0...v1.1.1) (2024-01-21)
+
+
+### Bug Fixes
+
+* **main:** put most command response in embeds ([f030b2c](https://github.com/CShatto99/Enchantify/commit/f030b2c968b0f23d48a03677786fb9b93bf2952e))
+
 # [1.1.0](https://github.com/CShatto99/Enchantify/compare/v1.0.5...v1.1.0) (2024-01-20)
 
 
