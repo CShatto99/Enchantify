@@ -7,6 +7,7 @@ import {
   ENCHANTMENTS_FILE_PATH,
   ENCHANTMENT_LEVELS,
   INPUT_OPTIONS,
+  LINKS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
 import getErrorMessage from '../utils/getErrorMessage';
@@ -100,7 +101,7 @@ const forge = {
               { name: 'Books', value: `${books} books` },
               {
                 name: 'Anvils',
-                value: `[${(books - 1) / 25} anvils](https://minecraft.fandom.com/wiki/Anvil#:~:text=An%20anvil%20typically%20survives%20for,the%20number%20of%20blocks%20fallen.)`,
+                value: `[${(books - 1) / 25} anvils](${LINKS.anvilDurability})`,
               },
             ]);
 

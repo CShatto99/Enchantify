@@ -9,6 +9,7 @@ export const COMMANDS = {
   price: 'price',
   remove: 'remove',
   enchantment: 'enchantment',
+  invite: 'invite',
 };
 export const INPUT_OPTIONS = {
   gear: 'gear',
@@ -16,6 +17,13 @@ export const INPUT_OPTIONS = {
   price: 'price',
   level: 'level',
   organize: 'organize',
+};
+export const LINKS = {
+  invite:
+    'https://discord.com/api/oauth2/authorize?client_id=1197698797048967178&permissions=2147552256&scope=bot',
+  github: 'https://github.com/CShatto99/Enchantify',
+  anvilDurability:
+    'https://minecraft.fandom.com/wiki/Anvil#:~:text=An%20anvil%20typically%20survives%20for,the%20number%20of%20blocks%20fallen',
 };
 export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   I: 1,
