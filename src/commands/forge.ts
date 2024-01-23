@@ -14,9 +14,7 @@ import getErrorMessage from '../utils/getErrorMessage';
 const forge = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.forge)
-    .setDescription(
-      'Calculates how many emeralds it costs to forge an enchanted book'
-    )
+    .setDescription('Calculates the costs to forge an enchanted book')
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.enchantment)
@@ -55,7 +53,7 @@ const forge = {
             ephemeral: true,
           });
         } else {
-          const enchantment = interaction.options.getString(
+          const enchantment: string = interaction.options.getString(
             INPUT_OPTIONS.enchantment
           );
           const endLevel: string = interaction.options.getString(
@@ -63,7 +61,18 @@ const forge = {
           );
           const endLevelNum = ENCHANTMENT_LEVELS[endLevel];
           const enchantments: Enchantments = JSON.parse(data);
-          const { level: startLevel, price } = enchantments[enchantment];
+          const enchantmentProperties: Enchantments[string] | undefined =
+            enchantments[enchantment];
+
+          if (!enchantmentProperties) {
+            await interaction.reply({
+              content: `❌ Enchantment \`${enchantment}\` is not in your library`,
+              ephemeral: true,
+            });
+            return;
+          }
+
+          const { level: startLevel, price } = enchantmentProperties;
           const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
 
           if (endLevelNum <= startLevelNum) {
@@ -75,19 +84,24 @@ const forge = {
           }
 
           const exponent = endLevelNum - startLevelNum;
-          const forgeCost = 2 ** exponent * parseInt(price);
+          const books = 2 ** exponent;
+          const emeralds = books * parseInt(price);
 
           const embed = new EmbedBuilder()
             .setColor(EMBED_COLOR)
             .setTitle(
               `${enchantment} ${startLevel} -> ${enchantment} ${endLevel}`
             )
-            .setDescription(
-              `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`
-            )
+            .setFooter({
+              text: `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`,
+            })
             .addFields([
-              { name: 'Cost', value: `${forgeCost} emeralds` },
-              { name: 'Books', value: `${2 ** exponent} books` },
+              { name: 'Emeralds', value: `${emeralds} emeralds` },
+              { name: 'Books', value: `${books} books` },
+              {
+                name: 'Anvils',
+                value: `[${(books - 1) / 25} anvils](https://minecraft.fandom.com/wiki/Anvil#:~:text=An%20anvil%20typically%20survives%20for,the%20number%20of%20blocks%20fallen.)`,
+              },
             ]);
 
           await interaction.reply({ embeds: [embed] });

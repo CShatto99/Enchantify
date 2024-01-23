@@ -2,6 +2,7 @@ export const MAX_AUTOCOMPLETE_OPTIONS = 25;
 export const ENCHANTMENTS_FILE_PATH = 'src/enchantments.json';
 export const GEAR_TYPE_DELIMITER = ',';
 export const EMBED_COLOR = '#17DD62';
+export const AVERAGE_ANVIL_DURABILITY = 25;
 export const COMMANDS = {
   enchantments: 'enchantments',
   forge: 'forge',
@@ -34,7 +35,6 @@ export const GEAR_TYPES = [
   'Legs',
   'Boots',
   'Weapon',
-  'Hammer',
   'Trident',
   'Shield',
   'Bow',
@@ -75,10 +75,6 @@ export const GEAR_OPTIONS = [
   {
     name: 'Weapon',
     values: ['weapon', 'sword'],
-  },
-  {
-    name: 'Hammer',
-    values: ['hammer'],
   },
   {
     name: 'Trident',

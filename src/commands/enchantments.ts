@@ -130,7 +130,7 @@ const enchantments = {
           let content: string | null = null;
 
           if (filteredEnchantments.length === 0) {
-            content = `🔍 No enchantments found`;
+            content = `🔍 No enchantments found, try adding one to your library with the \`/enchantment\` command`;
           } else if (!gear && organize !== 'No') {
             // Show all enchantments when no gear type is specified AND organize is undefined
             GEAR_OPTIONS.forEach(gearOption => {
