@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/CShatto99/Enchantify/compare/v1.1.1...v1.1.2) (2024-01-23)
+
+
+### Bug Fixes
+
+* **main:** add more error handling and anvil calculation on forge command ([3f5362e](https://github.com/CShatto99/Enchantify/commit/3f5362eb48e73b2eeebe6e334c9815954f1493e0))
+* **main:** move links to constants ([fdf2a20](https://github.com/CShatto99/Enchantify/commit/fdf2a2063a1575c190596fe82ab886353200adbe))
+
 ## [1.1.1](https://github.com/CShatto99/Enchantify/compare/v1.1.0...v1.1.1) (2024-01-21)
 
 
