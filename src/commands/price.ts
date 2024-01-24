@@ -1,8 +1,9 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { BaseInteraction, Enchantments } from '../@types/custom';
 import {
   COMMANDS,
+  EMBED_COLOR,
   ENCHANTMENTS_FILE_PATH,
   INPUT_OPTIONS,
   MAX_AUTOCOMPLETE_OPTIONS,
@@ -39,9 +40,12 @@ const price = {
           const enchantments: Enchantments = JSON.parse(data);
           const { level, price } = enchantments[enchantment];
 
-          await interaction.reply({
-            content: `${enchantment} ${level} costs ${price} emeralds.`,
-          });
+          const embed = new EmbedBuilder()
+            .setColor(EMBED_COLOR)
+            .setTitle(`${enchantment} ${level}`)
+            .setDescription(`${price} emeralds`);
+
+          await interaction.reply({ embeds: [embed] });
         }
       });
     } catch (error) {

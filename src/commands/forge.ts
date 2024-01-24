@@ -1,11 +1,13 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import * as fs from 'fs';
 import { BaseInteraction, Enchantments } from '../@types/custom';
 import {
   COMMANDS,
+  EMBED_COLOR,
   ENCHANTMENTS_FILE_PATH,
   ENCHANTMENT_LEVELS,
   INPUT_OPTIONS,
+  LINKS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
 import getErrorMessage from '../utils/getErrorMessage';
@@ -13,9 +15,7 @@ import getErrorMessage from '../utils/getErrorMessage';
 const forge = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.forge)
-    .setDescription(
-      'Calculates how many emeralds it costs to forge an enchantment book'
-    )
+    .setDescription('Calculates the costs to forge an enchanted book')
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.enchantment)
@@ -54,7 +54,7 @@ const forge = {
             ephemeral: true,
           });
         } else {
-          const enchantment = interaction.options.getString(
+          const enchantment: string = interaction.options.getString(
             INPUT_OPTIONS.enchantment
           );
           const endLevel: string = interaction.options.getString(
@@ -62,16 +62,50 @@ const forge = {
           );
           const endLevelNum = ENCHANTMENT_LEVELS[endLevel];
           const enchantments: Enchantments = JSON.parse(data);
-          const { level: startLevel, price } = enchantments[enchantment];
-          const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
-          const exponent = endLevelNum - startLevelNum - 1;
-          const forgeCost = 2 ** exponent * parseInt(price);
+          const enchantmentProperties: Enchantments[string] | undefined =
+            enchantments[enchantment];
 
-          await interaction.reply({
-            content: `It will cost **${forgeCost} emeralds** and **${
-              2 ** exponent
-            } ${enchantment} ${startLevel}** books to forge **${enchantment} ${endLevel}**.`,
-          });
+          if (!enchantmentProperties) {
+            await interaction.reply({
+              content: `❌ Enchantment \`${enchantment}\` is not in your library`,
+              ephemeral: true,
+            });
+            return;
+          }
+
+          const { level: startLevel, price } = enchantmentProperties;
+          const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
+
+          if (endLevelNum <= startLevelNum) {
+            await interaction.reply({
+              content: `ℹ️ The entered level must be greater than the ${enchantment} level in your library (${enchantment} ${startLevel})`,
+              ephemeral: true,
+            });
+            return;
+          }
+
+          const exponent = endLevelNum - startLevelNum;
+          const books = 2 ** exponent;
+          const emeralds = books * parseInt(price);
+
+          const embed = new EmbedBuilder()
+            .setColor(EMBED_COLOR)
+            .setTitle(
+              `${enchantment} ${startLevel} -> ${enchantment} ${endLevel}`
+            )
+            .setFooter({
+              text: `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`,
+            })
+            .addFields([
+              { name: 'Emeralds', value: `${emeralds} emeralds` },
+              { name: 'Books', value: `${books} books` },
+              {
+                name: 'Anvils',
+                value: `[${(books - 1) / 25} anvils](${LINKS.anvilDurability})`,
+              },
+            ]);
+
+          await interaction.reply({ embeds: [embed] });
         }
       });
     } catch (error) {

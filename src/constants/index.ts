@@ -1,18 +1,29 @@
 export const MAX_AUTOCOMPLETE_OPTIONS = 25;
 export const ENCHANTMENTS_FILE_PATH = 'src/enchantments.json';
+export const GEAR_TYPE_DELIMITER = ',';
+export const EMBED_COLOR = '#17DD62';
+export const AVERAGE_ANVIL_DURABILITY = 25;
 export const COMMANDS = {
-  compatibility: 'compatibility',
   enchantments: 'enchantments',
   forge: 'forge',
   price: 'price',
   remove: 'remove',
-  setEnchantment: 'set-enchantment',
+  enchantment: 'enchantment',
+  invite: 'invite',
 };
 export const INPUT_OPTIONS = {
   gear: 'gear',
   enchantment: 'enchantment',
   price: 'price',
   level: 'level',
+  organize: 'organize',
+};
+export const LINKS = {
+  invite:
+    'https://discord.com/api/oauth2/authorize?client_id=1197698797048967178&permissions=2147552256&scope=bot',
+  github: 'https://github.com/CShatto99/Enchantify',
+  anvilDurability:
+    'https://minecraft.fandom.com/wiki/Anvil#:~:text=An%20anvil%20typically%20survives%20for,the%20number%20of%20blocks%20fallen',
 };
 export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   I: 1,
@@ -27,72 +38,90 @@ export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   X: 10,
 };
 export const GEAR_TYPES = [
+  'Helmet',
+  'Chest',
+  'Legs',
+  'Boots',
+  'Weapon',
+  'Trident',
+  'Shield',
+  'Bow',
+  'Crossbow',
+  'Pickaxe',
+  'Axe',
+  'Shovel',
+  'Hoe',
+  'Fishing Pole',
+  'Shears',
+  'Weapon',
+];
+export const GEAR_OPTIONS = [
   {
     name: 'Helmet',
-    value: 'Helmet',
+    values: ['helmet', 'head', 'hat', 'hood'],
   },
   {
     name: 'Chest',
-    value: 'Chest',
+    values: [
+      'chest',
+      'chestplate',
+      'chestpiece',
+      'chest plate',
+      'chest piece',
+      'body',
+      'breastplate',
+    ],
   },
   {
     name: 'Legs',
-    value: 'Legs',
+    values: ['legs', 'leggings', 'pants'],
   },
   {
     name: 'Boots',
-    value: 'Boots',
+    values: ['boots', 'boot', 'feet', 'foot', 'shoe', 'shoes'],
   },
   {
     name: 'Weapon',
-    value: 'Weapon',
-  },
-  {
-    name: 'Hammer',
-    value: 'Hammer',
+    values: ['weapon', 'sword'],
   },
   {
     name: 'Trident',
-    value: 'Trident',
+    values: ['trident'],
   },
   {
     name: 'Shield',
-    value: 'Shield',
+    values: ['shield'],
   },
   {
     name: 'Bow',
-    value: 'Bow',
+    values: ['bow'],
   },
   {
     name: 'Crossbow',
-    value: 'Crossbow',
+    values: ['crossbow'],
   },
   {
     name: 'Pickaxe',
-    value: 'Pickaxe',
+    values: ['pickaxe', 'pick'],
   },
   {
     name: 'Axe',
-    value: 'Axe',
+    values: ['axe'],
   },
   {
     name: 'Shovel',
-    value: 'Shovel',
+    values: ['shovel'],
   },
   {
     name: 'Hoe',
-    value: 'Hoe',
+    values: ['hoe'],
   },
   {
     name: 'Fishing Pole',
-    value: 'Fishing Pole',
+    values: ['fishing pole', 'fishingpole', 'fishing', 'pole'],
   },
   {
     name: 'Shears',
-    value: 'Shears',
-  },
-  {
-    name: 'Weapon',
-    value: 'Weapon',
+    values: ['shears', 'shear'],
   },
 ];

@@ -71,9 +71,8 @@ const remove = {
                   ephemeral: true,
                 });
               } else {
-                console.log('Data has been written to', ENCHANTMENTS_FILE_PATH);
                 await interaction.reply({
-                  content: `${enchantment} ${level} removed.`,
+                  content: `${enchantment} ${level} removed`,
                 });
               }
             }

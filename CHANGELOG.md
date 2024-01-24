@@ -1,3 +1,24 @@
+## [1.1.1](https://github.com/CShatto99/Enchantify/compare/v1.1.0...v1.1.1) (2024-01-21)
+
+
+### Bug Fixes
+
+* **main:** put most command response in embeds ([f030b2c](https://github.com/CShatto99/Enchantify/commit/f030b2c968b0f23d48a03677786fb9b93bf2952e))
+
+# [1.1.0](https://github.com/CShatto99/Enchantify/compare/v1.0.5...v1.1.0) (2024-01-20)
+
+
+### Features
+
+* **main:** change enchantment name and add more error handling ([91b0908](https://github.com/CShatto99/Enchantify/commit/91b09085cb21d02f38f2038a8b2cf1f6341fc9e8))
+
+## [1.0.5](https://github.com/CShatto99/Enchantify/compare/v1.0.4...v1.0.5) (2024-01-20)
+
+
+### Bug Fixes
+
+* **main:** remove .js files ([1a62108](https://github.com/CShatto99/Enchantify/commit/1a62108f8cf08eb3fbca0b025de2810d7176ac05))
+
 ## [1.0.4](https://github.com/CShatto99/Enchantify/compare/v1.0.3...v1.0.4) (2024-01-19)
 
 
