@@ -1,15 +1,15 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import * as fs from 'fs';
-import { BaseInteraction, Enchantments } from '../@types/custom';
+import { BaseInteraction } from '../@types/custom';
 import {
   COMMANDS,
   EMBED_COLOR,
-  ENCHANTMENTS_FILE_PATH,
   ENCHANTMENT_LEVELS,
+  FEEDBACK,
   INPUT_OPTIONS,
   LINKS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
+import getServer from '../utils/db/getServer';
 import getErrorMessage from '../utils/getErrorMessage';
 
 const forge = {
@@ -43,71 +43,64 @@ const forge = {
     ),
   async execute(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          const enchantment: string = interaction.options.getString(
-            INPUT_OPTIONS.enchantment
-          );
-          const endLevel: string = interaction.options.getString(
-            INPUT_OPTIONS.level
-          );
-          const endLevelNum = ENCHANTMENT_LEVELS[endLevel];
-          const enchantments: Enchantments = JSON.parse(data);
-          const enchantmentProperties: Enchantments[string] | undefined =
-            enchantments[enchantment];
+      const server = await getServer(interaction.guildId);
 
-          if (!enchantmentProperties) {
-            await interaction.reply({
-              content: `❌ Enchantment \`${enchantment}\` is not in your library`,
-              ephemeral: true,
-            });
-            return;
-          }
+      if (!server) {
+        await interaction.reply({
+          content: FEEDBACK.serverNotFound,
+          ephemeral: true,
+        });
+        return;
+      }
 
-          const { level: startLevel, price } = enchantmentProperties;
-          const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
+      const enchantment: string = interaction.options.getString(
+        INPUT_OPTIONS.enchantment
+      );
+      const endLevel: string = interaction.options.getString(
+        INPUT_OPTIONS.level
+      );
+      const endLevelNum = ENCHANTMENT_LEVELS[endLevel];
+      const enchantmentFound = server.enchantments.get(enchantment);
 
-          if (endLevelNum <= startLevelNum) {
-            await interaction.reply({
-              content: `ℹ️ The entered level must be greater than the ${enchantment} level in your library (${enchantment} ${startLevel})`,
-              ephemeral: true,
-            });
-            return;
-          }
+      if (!enchantmentFound) {
+        await interaction.reply({
+          content: FEEDBACK.enchantmentNotFound(enchantment),
+          ephemeral: true,
+        });
+        return;
+      }
 
-          const exponent = endLevelNum - startLevelNum;
-          const books = 2 ** exponent;
-          const emeralds = books * parseInt(price);
+      const { level: startLevel, price } = enchantmentFound;
+      const startLevelNum = ENCHANTMENT_LEVELS[startLevel];
 
-          const embed = new EmbedBuilder()
-            .setColor(EMBED_COLOR)
-            .setTitle(
-              `${enchantment} ${startLevel} -> ${enchantment} ${endLevel}`
-            )
-            .setFooter({
-              text: `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`,
-            })
-            .addFields([
-              { name: 'Emeralds', value: `${emeralds} emeralds` },
-              { name: 'Books', value: `${books} books` },
-              {
-                name: 'Anvils',
-                value: `[${(books - 1) / 25} anvils](${LINKS.anvilDurability})`,
-              },
-            ]);
+      if (endLevelNum <= startLevelNum) {
+        await interaction.reply({
+          content: FEEDBACK.levelOutOfRange(enchantment, startLevel),
+          ephemeral: true,
+        });
+        return;
+      }
 
-          await interaction.reply({ embeds: [embed] });
-        }
-      });
+      const exponent = endLevelNum - startLevelNum;
+      const books = 2 ** exponent;
+      const emeralds = books * parseInt(price);
+
+      const embed = new EmbedBuilder()
+        .setColor(EMBED_COLOR)
+        .setTitle(`${enchantment} ${startLevel} -> ${enchantment} ${endLevel}`)
+        .setFooter({
+          text: `Calculations are based on the ${enchantment} level in your enchantment library (${enchantment} ${startLevel})`,
+        })
+        .addFields([
+          { name: 'Emeralds', value: `${emeralds} emeralds` },
+          { name: 'Books', value: `${books} books` },
+          {
+            name: 'Anvils',
+            value: `[${(books - 1) / 25} anvils](${LINKS.anvilDurability})`,
+          },
+        ]);
+
+      await interaction.reply({ embeds: [embed] });
     } catch (error) {
       console.error(`${COMMANDS.forge} error: `, error);
       await interaction.reply({
@@ -118,36 +111,25 @@ const forge = {
   },
   async autocomplete(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          // Extract the search term from the interaction's options
-          const search: string = interaction.options.getFocused();
+      const server = await getServer(interaction.guildId);
 
-          const enchantments: Enchantments = JSON.parse(data);
+      // Extract the search term from the interaction's options
+      const search = interaction.options.getFocused();
 
-          // Create a list of choices with name and value properties
-          const options = Object.keys(enchantments).map(enchantment => ({
-            name: enchantment,
-            value: enchantment,
-          }));
+      // Create a list of choices with name and value properties
+      const options = Array.from(server?.enchantments.keys() ?? []).map(
+        enchantment => ({
+          name: enchantment,
+          value: enchantment,
+        })
+      );
 
-          // Filter the choices based on the search term
-          const filteredOptions = options
-            .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
-            .filter(option => option.value.startsWith(search));
+      // Filter the choices based on the search term
+      const filteredOptions = options
+        .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
+        .filter(option => option.value.startsWith(search));
 
-          await interaction.respond(filteredOptions);
-        }
-      });
+      await interaction.respond(filteredOptions);
     } catch (error) {
       const errorMsg = getErrorMessage(error);
       console.error(`Error occurred during search autocomplete: ${errorMsg}`);
