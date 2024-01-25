@@ -1,3 +1,12 @@
+## [1.1.3](https://github.com/CShatto99/Enchantify/compare/v1.1.2...v1.1.3) (2024-01-25)
+
+
+### Bug Fixes
+
+* **add-mongodb:** cleanup and more jsdocs ([441a44a](https://github.com/CShatto99/Enchantify/commit/441a44a0c9d2ca33cc394a1b2e3280ddcd5ff68d))
+* **add-mongodb:** finish adding mongodb implementation ([b588216](https://github.com/CShatto99/Enchantify/commit/b5882162622718f5d1108be4b352e21d20721558))
+* **add-mongodb:** start adding mongo ([9753d68](https://github.com/CShatto99/Enchantify/commit/9753d68f058fdedbd145bd8833dc38d462b11562))
+
 ## [1.1.2](https://github.com/CShatto99/Enchantify/compare/v1.1.1...v1.1.2) (2024-01-23)
 
 
