@@ -109,9 +109,6 @@ const enchantments = {
         return;
       }
 
-      // const enchantments: [string, Enchantments[string]][] = Object.entries(
-      //   JSON.parse(data)
-      // );
       const enchantments = Array.from(server.enchantments.entries());
       const gear: string = interaction.options.getString(INPUT_OPTIONS.gear);
       const organize: string = interaction.options.getString(

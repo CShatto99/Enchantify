@@ -5,6 +5,12 @@ import { client } from '..';
 import { Command } from '../@types/custom';
 import config from './config';
 
+/**
+ * Imports and initializes commands for the Discord bot.
+ *
+ * @function
+ * @returns This function does not return a value.
+ */
 export default function importCommands() {
   client.commands = new Collection();
 

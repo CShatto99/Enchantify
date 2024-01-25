@@ -1,11 +1,11 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { BaseInteraction } from '../@types/custom';
-import { COMMANDS } from '../constants';
+import { COMMANDS, FEEDBACK } from '../constants';
 import Server from '../models/Server';
 import getServer from '../utils/db/getServer';
 import getErrorMessage from '../utils/getErrorMessage';
 
-const invite = {
+const register = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.register)
     .setDescription('Manually register server in Enchantify database'),
@@ -14,14 +14,14 @@ const invite = {
       const server = await getServer(interaction.guildId);
       if (server) {
         await interaction.reply({
-          content: `ℹ️ This server is already registered`,
+          content: FEEDBACK.serverAlreadyRegistred,
         });
         return;
       }
 
       await Server.create({ serverId: interaction.guildId });
       await interaction.reply({
-        content: `✅ Server registered, get started by using the \`/${COMMANDS.enchantment}\` command`,
+        content: FEEDBACK.serverRegistered,
       });
     } catch (error) {
       console.error(`${COMMANDS.register} error: `, error);
@@ -33,4 +33,4 @@ const invite = {
   },
 };
 
-export default invite;
+export default register;

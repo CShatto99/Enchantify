@@ -1,6 +1,7 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { BaseInteraction } from '../@types/custom';
 import {
+  ANVIL_DURABILITY,
   COMMANDS,
   EMBED_COLOR,
   ENCHANTMENT_LEVELS,
@@ -96,7 +97,7 @@ const forge = {
           { name: 'Books', value: `${books} books` },
           {
             name: 'Anvils',
-            value: `[${(books - 1) / 25} anvils](${LINKS.anvilDurability})`,
+            value: `[${(books - 1) / ANVIL_DURABILITY} anvils](${LINKS.anvilDurability})`,
           },
         ]);
 

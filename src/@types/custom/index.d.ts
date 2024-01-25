@@ -27,17 +27,3 @@ export type ServerModel = {
     }
   >;
 };
-
-export type Enchantments = {
-  [key: string]: {
-    gear: string[];
-    level: string;
-    price: string;
-  };
-};
-
-export type Enchantment = {
-  gear: string[];
-  level: string;
-  price: string;
-};

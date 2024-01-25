@@ -8,6 +8,12 @@ import path from 'path';
 import { Command } from '../@types/custom';
 import config from './config';
 
+/**
+ * Registers or updates Discord slash commands for the bot.
+ *
+ * @function
+ * @returns A Promise that resolves when the commands are successfully registered or updated.
+ */
 export default async function registerSlashCommands() {
   const rest = new REST({ version: '10' }).setToken(config.BOT_TOKEN);
   const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];

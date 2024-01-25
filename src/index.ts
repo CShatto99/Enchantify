@@ -23,7 +23,6 @@ export const client: BotClient = new Client({
   ],
 });
 
-// @ts-ignore
 client.once(Events.ClientReady, () => {
   client.user.setActivity({
     name: 'Managing Enchantments 📖',
