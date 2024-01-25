@@ -2,6 +2,12 @@ import { Events } from 'discord.js';
 import { BaseInteraction, Command } from '../@types/custom';
 import { client } from '../index';
 
+/**
+ * Sets up an event handler for handling Discord interactions.
+ *
+ * @function
+ * @returns This function does not return a value.
+ */
 export default function createInteraction() {
   client.on(Events.InteractionCreate, async (interaction: BaseInteraction) => {
     const command: Command = interaction.client.commands.get(

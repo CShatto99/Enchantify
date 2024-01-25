@@ -1,14 +1,14 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import * as fs from 'fs';
-import { BaseInteraction, Enchantments } from '../@types/custom';
 import {
   COMMANDS,
   EMBED_COLOR,
-  ENCHANTMENTS_FILE_PATH,
+  FEEDBACK,
   INPUT_OPTIONS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
+import getServer from '../utils/db/getServer';
 import getErrorMessage from '../utils/getErrorMessage';
+import { BaseInteraction } from './../@types/custom/index.d';
 
 const price = {
   data: new SlashCommandBuilder()
@@ -23,31 +23,37 @@ const price = {
     ),
   async execute(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          const enchantment = interaction.options.getString(
-            INPUT_OPTIONS.enchantment
-          );
-          const enchantments: Enchantments = JSON.parse(data);
-          const { level, price } = enchantments[enchantment];
+      const server = await getServer(interaction.guildId);
 
-          const embed = new EmbedBuilder()
-            .setColor(EMBED_COLOR)
-            .setTitle(`${enchantment} ${level}`)
-            .setDescription(`${price} emeralds`);
+      if (!server) {
+        await interaction.reply({
+          content: FEEDBACK.serverNotFound,
+          ephemeral: true,
+        });
+        return;
+      }
 
-          await interaction.reply({ embeds: [embed] });
-        }
-      });
+      const enchantment: string = interaction.options.getString(
+        INPUT_OPTIONS.enchantment
+      );
+      const enchantmentFound = server.enchantments.get(enchantment);
+
+      if (!enchantmentFound) {
+        await interaction.reply({
+          content: FEEDBACK.enchantmentNotFound(enchantment),
+          ephemeral: true,
+        });
+        return;
+      }
+
+      const { level, price } = enchantmentFound;
+
+      const embed = new EmbedBuilder()
+        .setColor(EMBED_COLOR)
+        .setTitle(`${enchantment} ${level}`)
+        .setDescription(`${price} emeralds`);
+
+      await interaction.reply({ embeds: [embed] });
     } catch (error) {
       console.error(`${COMMANDS.price} error: `, error);
       await interaction.reply({
@@ -58,36 +64,25 @@ const price = {
   },
   async autocomplete(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          // Extract the search term from the interaction's options
-          const search = interaction.options.getFocused();
+      const server = await getServer(interaction.guildId);
 
-          const enchantments: Enchantments = JSON.parse(data);
+      // Extract the search term from the interaction's options
+      const search = interaction.options.getFocused();
 
-          // Create a list of choices with name and value properties
-          const options = Object.keys(enchantments).map(enchantment => ({
-            name: enchantment,
-            value: enchantment,
-          }));
+      // Create a list of choices with name and value properties
+      const options = Array.from(server?.enchantments.keys() ?? []).map(
+        enchantment => ({
+          name: enchantment,
+          value: enchantment,
+        })
+      );
 
-          // Filter the choices based on the search term
-          const filteredOptions = options
-            .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
-            .filter(option => option.value.startsWith(search));
+      // Filter the choices based on the search term
+      const filteredOptions = options
+        .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
+        .filter(option => option.value.startsWith(search));
 
-          await interaction.respond(filteredOptions);
-        }
-      });
+      await interaction.respond(filteredOptions);
     } catch (error) {
       const errorMsg = getErrorMessage(error);
       console.error(`Error occurred during search autocomplete: ${errorMsg}`);

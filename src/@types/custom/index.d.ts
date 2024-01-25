@@ -16,10 +16,14 @@ export type Command = {
   };
 };
 
-export type Enchantments = {
-  [key: string]: {
-    gear: string[];
-    level: string;
-    price: string;
-  };
+export type ServerModel = {
+  serverId: string;
+  enchantments: Map<
+    string,
+    {
+      gear: string[];
+      level: string;
+      price: string;
+    }
+  >;
 };

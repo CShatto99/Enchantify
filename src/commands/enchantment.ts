@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from 'discord.js';
-import * as fs from 'fs';
-import { BaseInteraction, Enchantments } from '../@types/custom';
+import { BaseInteraction } from '../@types/custom';
 import {
   COMMANDS,
+  FEEDBACK,
   GEAR_OPTIONS,
   GEAR_TYPE_DELIMITER,
   INPUT_OPTIONS,
   MAX_AUTOCOMPLETE_OPTIONS,
 } from '../constants';
-import { ENCHANTMENTS_FILE_PATH } from '../constants/index';
+import getServer from '../utils/db/getServer';
 import getErrorMessage from '../utils/getErrorMessage';
 
 const enchantment = {
@@ -55,79 +55,58 @@ const enchantment = {
     ),
   async execute(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          const enchantment: string = interaction.options.getString(
-            INPUT_OPTIONS.enchantment
-          );
-          const level: string = interaction.options.getString(
-            INPUT_OPTIONS.level
-          );
-          const price: string = interaction.options.getString(
-            INPUT_OPTIONS.price
-          );
-          const gear: string = interaction.options.getString(
-            INPUT_OPTIONS.gear
-          );
-          const gearTypes: string[] = [];
-          const unsupportedGear = [];
-          gear.split(GEAR_TYPE_DELIMITER).forEach(gearType => {
-            const lowerGearType = gearType.trim().toLowerCase();
-            const gearFound = GEAR_OPTIONS.find(({ values }) =>
-              values.includes(lowerGearType)
-            );
-            if (gearFound) {
-              gearTypes.push(gearFound.name);
-            } else {
-              unsupportedGear.push(gearType);
-            }
-          });
+      const server = await getServer(interaction.guildId);
 
-          // User entered at least one unsupported gear type
-          if (unsupportedGear.length > 0) {
-            await interaction.reply({
-              content: `❌ Unsupported gear type provided, supported gear types: \`${GEAR_OPTIONS.map(gearOption => gearOption.name).join(', ')}\``,
-              ephemeral: true,
-            });
-            return;
+      if (!server) {
+        await interaction.reply({
+          content: FEEDBACK.serverNotFound,
+          ephemeral: true,
+        });
+        return;
+      }
+
+      const enchantment: string = interaction.options.getString(
+        INPUT_OPTIONS.enchantment
+      );
+      const level: string = interaction.options.getString(INPUT_OPTIONS.level);
+      const price: string = interaction.options.getString(INPUT_OPTIONS.price);
+      const gear: string | undefined = interaction.options.getString(
+        INPUT_OPTIONS.gear
+      );
+
+      const gearTypes: string[] = [];
+      const unsupportedGear = [];
+      if (gear) {
+        gear.split(GEAR_TYPE_DELIMITER).forEach(gearType => {
+          const lowerGearType = gearType.trim().toLowerCase();
+          const gearFound = GEAR_OPTIONS.find(({ values }) =>
+            values.includes(lowerGearType)
+          );
+          if (gearFound) {
+            gearTypes.push(gearFound.name);
+          } else {
+            unsupportedGear.push(gearType);
           }
+        });
+      }
 
-          const enchantments: Enchantments = JSON.parse(data);
-          const newEnchantments: Enchantments = {
-            ...enchantments,
-            ...{ [enchantment]: { level, price, gear: gearTypes } },
-          };
+      // User entered at least one unsupported gear type
+      if (unsupportedGear.length > 0) {
+        await interaction.reply({
+          content: FEEDBACK.unsupportedGear,
+          ephemeral: true,
+        });
+        return;
+      }
 
-          fs.writeFile(
-            ENCHANTMENTS_FILE_PATH,
-            JSON.stringify(newEnchantments, null, 2),
-            async error => {
-              if (error) {
-                console.error(
-                  `Error writing to file located at ${ENCHANTMENTS_FILE_PATH}: `,
-                  error
-                );
-                await interaction.reply({
-                  content: `❌ Error updating enchantments data`,
-                  ephemeral: true,
-                });
-              } else {
-                await interaction.reply({
-                  content: `${enchantment} ${level} added`,
-                });
-              }
-            }
-          );
-        }
+      const enchantmentFound = server.enchantments.get(enchantment);
+      const newEnchantment = { level, price, gear: gearTypes };
+
+      server.enchantments.set(enchantment, newEnchantment);
+      server.save();
+
+      await interaction.reply({
+        content: `${enchantment} ${level} ${enchantmentFound ? 'updated' : 'added'}`,
       });
     } catch (error) {
       console.error(`${COMMANDS.enchantment} error: `, error);
@@ -139,36 +118,25 @@ const enchantment = {
   },
   async autocomplete(interaction: BaseInteraction) {
     try {
-      fs.readFile(ENCHANTMENTS_FILE_PATH, 'utf8', async (error, data) => {
-        if (error) {
-          console.error(
-            `Error opening file located at ${ENCHANTMENTS_FILE_PATH}: `,
-            error
-          );
-          await interaction.reply({
-            content: `❌ Error fetching enchantments data`,
-            ephemeral: true,
-          });
-        } else {
-          // Extract the search term from the interaction's options
-          const search = interaction.options.getFocused();
+      const server = await getServer(interaction.guildId);
 
-          const enchantments: Enchantments = JSON.parse(data);
+      // Extract the search term from the interaction's options
+      const search = interaction.options.getFocused();
 
-          // Create a list of choices with name and value properties
-          const options = Object.keys(enchantments).map(enchantment => ({
-            name: enchantment,
-            value: enchantment,
-          }));
+      // Create a list of choices with name and value properties
+      const options = Array.from(server?.enchantments.keys() ?? []).map(
+        enchantment => ({
+          name: enchantment,
+          value: enchantment,
+        })
+      );
 
-          // Filter the choices based on the search term
-          const filteredOptions = options
-            .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
-            .filter(option => option.value.startsWith(search));
+      // Filter the choices based on the search term
+      const filteredOptions = options
+        .slice(0, MAX_AUTOCOMPLETE_OPTIONS)
+        .filter(option => option.value.startsWith(search));
 
-          await interaction.respond(filteredOptions);
-        }
-      });
+      await interaction.respond(filteredOptions);
     } catch (error) {
       const errorMsg = getErrorMessage(error);
       console.error(`Error occurred during search autocomplete: ${errorMsg}`);

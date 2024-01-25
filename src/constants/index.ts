@@ -1,15 +1,15 @@
 export const MAX_AUTOCOMPLETE_OPTIONS = 25;
-export const ENCHANTMENTS_FILE_PATH = 'src/enchantments.json';
 export const GEAR_TYPE_DELIMITER = ',';
 export const EMBED_COLOR = '#17DD62';
-export const AVERAGE_ANVIL_DURABILITY = 25;
+export const ANVIL_DURABILITY = 25;
 export const COMMANDS = {
+  enchantment: 'enchantment',
   enchantments: 'enchantments',
   forge: 'forge',
-  price: 'price',
-  remove: 'remove',
-  enchantment: 'enchantment',
   invite: 'invite',
+  price: 'price',
+  register: 'register',
+  remove: 'remove',
 };
 export const INPUT_OPTIONS = {
   gear: 'gear',
@@ -37,24 +37,6 @@ export const ENCHANTMENT_LEVELS: { [key: string]: number } = {
   IX: 9,
   X: 10,
 };
-export const GEAR_TYPES = [
-  'Helmet',
-  'Chest',
-  'Legs',
-  'Boots',
-  'Weapon',
-  'Trident',
-  'Shield',
-  'Bow',
-  'Crossbow',
-  'Pickaxe',
-  'Axe',
-  'Shovel',
-  'Hoe',
-  'Fishing Pole',
-  'Shears',
-  'Weapon',
-];
 export const GEAR_OPTIONS = [
   {
     name: 'Helmet',
@@ -125,3 +107,14 @@ export const GEAR_OPTIONS = [
     values: ['shears', 'shear'],
   },
 ];
+export const FEEDBACK = {
+  serverNotFound: `❌ Server not found, try registering the server with the \`/${COMMANDS.register}\` command`,
+  unsupportedGear: `❌ Unsupported gear type provided, supported gear types: \`${GEAR_OPTIONS.map(gearOption => gearOption.name).join(', ')}\``,
+  noEnchantments: `🔍 No enchantments found, try adding one to your library with the \`/${COMMANDS.enchantment}\` command`,
+  enchantmentNotFound: (enchantment: string) =>
+    `❌ Enchantment \`${enchantment}\` is not in your library, try a different enchantment or add it to your library with the \`/${COMMANDS.enchantment}\` command`,
+  levelOutOfRange: (enchantment: string, startLevel: string) =>
+    `ℹ️ The entered level must be greater than the ${enchantment} level in your library (${enchantment} ${startLevel})`,
+  serverAlreadyRegistred: `ℹ️ This server is already registered`,
+  serverRegistered: `✅ Server registered, get started by using the \`/${COMMANDS.enchantment}\` command`,
+};
