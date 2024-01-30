@@ -6,10 +6,10 @@ import {
   Guild,
 } from 'discord.js';
 import { BotClient } from './@types/custom';
-import Server from './models/Server';
 import config from './utils/config';
 import connectDb from './utils/connectDb';
 import createInteraction from './utils/createInteraction';
+import createServer from './utils/db/createServer';
 import getServer from './utils/db/getServer';
 import importCommands from './utils/importCommands';
 import registerSlashCommands from './utils/registerSlashCommands';
@@ -38,7 +38,7 @@ client.once(Events.ClientReady, () => {
 client.on(Events.GuildCreate, async (guild: Guild) => {
   const server = await getServer(guild.id);
   if (!server) {
-    await Server.create({ serverId: guild.id });
+    await createServer(guild.id);
   }
 });
 

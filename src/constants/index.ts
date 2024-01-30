@@ -9,6 +9,7 @@ export const COMMANDS = {
   invite: 'invite',
   price: 'price',
   register: 'register',
+  removeAll: 'remove-all',
   remove: 'remove',
 };
 export const INPUT_OPTIONS = {
@@ -117,4 +118,6 @@ export const FEEDBACK = {
     `ℹ️ The entered level must be greater than the ${enchantment} level in your library (${enchantment} ${startLevel})`,
   serverAlreadyRegistred: `ℹ️ This server is already registered`,
   serverRegistered: `✅ Server registered, get started by using the \`/${COMMANDS.enchantment}\` command`,
+  enchantmentsRemoved: `✅ All enchantments removed`,
+  adminsOnly: `❌ Only admins have permission to run this command`,
 };

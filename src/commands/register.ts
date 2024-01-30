@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { BaseInteraction } from '../@types/custom';
 import { COMMANDS, FEEDBACK } from '../constants';
-import Server from '../models/Server';
+import createServer from '../utils/db/createServer';
 import getServer from '../utils/db/getServer';
 import getErrorMessage from '../utils/getErrorMessage';
 
@@ -19,7 +19,7 @@ const register = {
         return;
       }
 
-      await Server.create({ serverId: interaction.guildId });
+      await createServer(interaction.guildId);
       await interaction.reply({
         content: FEEDBACK.serverRegistered,
       });
