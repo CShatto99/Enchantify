@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/CShatto99/Enchantify/compare/v1.1.3...v1.1.4) (2024-01-30)
+
+
+### Bug Fixes
+
+* **main:** add remove all and modify other commands ([488ca74](https://github.com/CShatto99/Enchantify/commit/488ca74f7978d37013d1ddeb920bb07c2ec1b81a))
+
 ## [1.1.3](https://github.com/CShatto99/Enchantify/compare/v1.1.2...v1.1.3) (2024-01-25)
 
 
