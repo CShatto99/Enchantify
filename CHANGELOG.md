@@ -1,3 +1,10 @@
+## [1.1.7](https://github.com/CShatto99/Enchantify/compare/v1.1.6...v1.1.7) (2024-02-05)
+
+
+### Bug Fixes
+
+* **main:** add Creating Issues section to table of contents in README ([d55a52f](https://github.com/CShatto99/Enchantify/commit/d55a52f70ecbae3e30f15efeb3151ddff4cab923))
+
 ## [1.1.6](https://github.com/CShatto99/Enchantify/compare/v1.1.5...v1.1.6) (2024-02-05)
 
 
