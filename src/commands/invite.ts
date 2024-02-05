@@ -5,7 +5,7 @@ import { COMMANDS, EMBED_COLOR, LINKS } from '../constants';
 const invite = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.invite)
-    .setDescription('Enchantify discord invite link'),
+    .setDescription('Enchantify Discord invite link'),
   async execute(interaction: BaseInteraction) {
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLOR)

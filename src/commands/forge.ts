@@ -16,7 +16,9 @@ import getErrorMessage from '../utils/getErrorMessage';
 const forge = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.forge)
-    .setDescription('Calculates the costs to forge an enchanted book')
+    .setDescription(
+      'Calculates the amount of emeralds, books, and anvils it costs to forge an enchanted book'
+    )
     .addStringOption(option =>
       option
         .setName(INPUT_OPTIONS.enchantment)

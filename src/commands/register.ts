@@ -8,7 +8,7 @@ import getErrorMessage from '../utils/getErrorMessage';
 const register = {
   data: new SlashCommandBuilder()
     .setName(COMMANDS.register)
-    .setDescription('Manually register server in Enchantify database'),
+    .setDescription('Manually register server in the Enchantify database'),
   async execute(interaction: BaseInteraction) {
     try {
       const server = await getServer(interaction.guildId);
