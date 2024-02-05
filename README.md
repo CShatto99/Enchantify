@@ -13,10 +13,11 @@ Enchantify: A Minecraft Enchantment Assistant. Keep track of enchantments, view 
   - [Invite](#invite)
   - [Price](#price)
   - [Register](#register)
-  - [Remove-All](#remove-all)
+  - [Remove All](#remove-all)
   - [Remove](#remove)
 - [Installation](#installation)
-
+- [Creating Issues](#creating-issues)
+  
 ## Commands
 
 ### `/enchantment`
