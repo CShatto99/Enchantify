@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/CShatto99/Enchantify/compare/v1.1.4...v1.1.5) (2024-02-05)
+
+
+### Bug Fixes
+
+* **main:** remove unused util file ([d60bfc6](https://github.com/CShatto99/Enchantify/commit/d60bfc6df1bdce04df840ce167f06917ac03dbb8))
+
 ## [1.1.4](https://github.com/CShatto99/Enchantify/compare/v1.1.3...v1.1.4) (2024-01-30)
 
 
