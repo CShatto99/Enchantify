@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/CShatto99/Enchantify/compare/v1.1.5...v1.1.6) (2024-02-05)
+
+
+### Bug Fixes
+
+* **main:** update README ([43482ef](https://github.com/CShatto99/Enchantify/commit/43482efdba879322ff4e95c6ccf87fc78cbed019))
+
 ## [1.1.5](https://github.com/CShatto99/Enchantify/compare/v1.1.4...v1.1.5) (2024-02-05)
 
 
